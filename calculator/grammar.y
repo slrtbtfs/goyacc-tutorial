@@ -13,7 +13,7 @@ Number float64
 }
 
 
-%token<String> NUMBER VARIABLE
+%token<String> NUMBER IDENTIFIER
 
 %type <Number> expr
 
@@ -35,7 +35,7 @@ expr:
                 yylex.Error(err.Error())
         }
         }
-    | VARIABLE {
+    | IDENTIFIER {
         var ok bool
         $$, ok = yylex.(*interpreter).vars[$1]
         if !ok {
@@ -51,7 +51,7 @@ expr:
     ;
 
 assignment:
-          VARIABLE '=' expr {
+          IDENTIFIER '=' expr {
                 if !yylex.(*interpreter).evaluationFailed {
                         yylex.(*interpreter).vars[$1] = $3 
                 }};

@@ -57,7 +57,7 @@ var tokens = []tokenDef{
 	},
 	tokenDef{
 		regex: regexp.MustCompile(`^[_a-zA-Z][_a-zA-Z0-9]*`),
-		token: VARIABLE,
+		token: IDENTIFIER,
 	},
 }
 
