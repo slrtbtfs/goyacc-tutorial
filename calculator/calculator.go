@@ -23,7 +23,6 @@ func main() {
 			return
 		}
 
-		interpreter.position = 0
 		interpreter.input = input
 		interpreter.evaluationFailed = false
 
@@ -35,7 +34,6 @@ const EOF = 0
 
 type interpreter struct {
 	input            string
-	position         int
 	evaluationFailed bool
 	vars             map[string]float64
 }
@@ -62,22 +60,29 @@ var tokens = []tokenDef{
 }
 
 func (l *interpreter) Lex(lval *yySymType) int {
-	// Skip spaces
-	for ; l.position < len(l.input) && isSpace(l.input[l.position]); l.position++ {
+	// Skip spaces.
+	for ; len(l.input) > 0 && isSpace(l.input[0]); l.input = l.input[1:] {
 	}
-	if l.position == len(l.input) {
+
+	// Check if the input has ended.
+	if len(l.input) == 0 {
 		return EOF
 	}
+
+	// Check if one of the regular expressions matches.
 	for _, tokDef := range tokens {
-		str := tokDef.regex.FindString(l.input[l.position:])
+		str := tokDef.regex.FindString(l.input)
 		if str != "" {
+			// Pass string content to the parser.
 			lval.String = str
-			l.position += len(str)
+			l.input = l.input[len(str):]
 			return tokDef.token
 		}
 	}
-	ret := int(l.input[l.position])
-	l.position++
+
+	// Otherwise return the next letter.
+	ret := int(l.input[0])
+	l.input = l.input[1:]
 	return ret
 }
 
