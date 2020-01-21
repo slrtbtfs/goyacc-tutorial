@@ -9,7 +9,7 @@ import (
 
 %union{
 String string
-Number int
+Number float64
 }
 
 
@@ -30,7 +30,7 @@ start: expr {
 expr:
       NUMBER { 
         var err error
-        $$, err = strconv.Atoi($1)
+        $$, err = strconv.ParseFloat($1, 64)
         if err != nil{
                 yylex.Error(err.Error())
         }

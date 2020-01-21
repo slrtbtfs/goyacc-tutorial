@@ -12,7 +12,7 @@ func main() {
 	yyErrorVerbose = true
 	interpreter := interpreter{}
 
-	interpreter.vars = make(map[string]int)
+	interpreter.vars = make(map[string]float64)
 
 	for {
 		fmt.Print("> ")
@@ -37,7 +37,7 @@ type interpreter struct {
 	input            string
 	position         int
 	evaluationFailed bool
-	vars             map[string]int
+	vars             map[string]float64
 }
 
 func (i *interpreter) Error(e string) {
@@ -52,11 +52,11 @@ type tokenDef struct {
 
 var tokens = []tokenDef{
 	tokenDef{
-		regex: regexp.MustCompile("^\\d+"),
+		regex: regexp.MustCompile(`^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?`),
 		token: NUMBER,
 	},
 	tokenDef{
-		regex: regexp.MustCompile("^[_a-zA-Z][_a-zA-Z0-9]*"),
+		regex: regexp.MustCompile(`^[_a-zA-Z][_a-zA-Z0-9]*`),
 		token: VARIABLE,
 	},
 }
