@@ -21,7 +21,11 @@ Number int
 %left '*' '/'
 
 %%
-start: expr {fmt.Println($1)} | assignment;
+start: expr {
+        if !yylex.(*interpreter).evaluationFailed{
+                fmt.Println($1)
+        }} 
+     | assignment;
 
 expr:
       NUMBER { 
@@ -43,8 +47,12 @@ expr:
     | expr '*' expr { $$ = $1 * $3 }
     | expr '/' expr { $$ = $1 / $3 }
     | '(' expr ')'  { $$ = $2 }
+    | '-' expr %prec '*' { $$ = -$2 }
     ;
 
 assignment:
-          VARIABLE '=' expr { yylex.(*interpreter).vars[$1] = $3 };
+          VARIABLE '=' expr {
+                if !yylex.(*interpreter).evaluationFailed {
+                        yylex.(*interpreter).vars[$1] = $3 
+                }};
 %%
