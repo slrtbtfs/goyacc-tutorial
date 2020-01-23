@@ -1,0 +1,211 @@
+
+state 0
+	$accept: .start $end 
+
+	NUMBER  shift 4
+	VARIABLE  shift 5
+	'('  shift 6
+	.  error
+
+	expr  goto 2
+	start  goto 1
+	assignment  goto 3
+
+state 1
+	$accept:  start.$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	start:  expr.    (1)
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+
+	'+'  shift 7
+	'-'  shift 8
+	'*'  shift 9
+	'/'  shift 10
+	.  reduce 1 (src line 24)
+
+
+state 3
+	start:  assignment.    (2)
+
+	.  reduce 2 (src line 24)
+
+
+state 4
+	expr:  NUMBER.    (3)
+
+	.  reduce 3 (src line 26)
+
+
+state 5
+	expr:  VARIABLE.    (4)
+	assignment:  VARIABLE.'=' expr 
+
+	'='  shift 11
+	.  reduce 4 (src line 34)
+
+
+state 6
+	expr:  '('.expr ')' 
+
+	NUMBER  shift 4
+	VARIABLE  shift 13
+	'('  shift 6
+	.  error
+
+	expr  goto 12
+
+state 7
+	expr:  expr '+'.expr 
+
+	NUMBER  shift 4
+	VARIABLE  shift 13
+	'('  shift 6
+	.  error
+
+	expr  goto 14
+
+state 8
+	expr:  expr '-'.expr 
+
+	NUMBER  shift 4
+	VARIABLE  shift 13
+	'('  shift 6
+	.  error
+
+	expr  goto 15
+
+state 9
+	expr:  expr '*'.expr 
+
+	NUMBER  shift 4
+	VARIABLE  shift 13
+	'('  shift 6
+	.  error
+
+	expr  goto 16
+
+state 10
+	expr:  expr '/'.expr 
+
+	NUMBER  shift 4
+	VARIABLE  shift 13
+	'('  shift 6
+	.  error
+
+	expr  goto 17
+
+state 11
+	assignment:  VARIABLE '='.expr 
+
+	NUMBER  shift 4
+	VARIABLE  shift 13
+	'('  shift 6
+	.  error
+
+	expr  goto 18
+
+state 12
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  '(' expr.')' 
+
+	'+'  shift 7
+	'-'  shift 8
+	'*'  shift 9
+	'/'  shift 10
+	')'  shift 19
+	.  error
+
+
+state 13
+	expr:  VARIABLE.    (4)
+
+	.  reduce 4 (src line 34)
+
+
+state 14
+	expr:  expr.'+' expr 
+	expr:  expr '+' expr.    (5)
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+
+	'*'  shift 9
+	'/'  shift 10
+	.  reduce 5 (src line 41)
+
+
+state 15
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr '-' expr.    (6)
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+
+	'*'  shift 9
+	'/'  shift 10
+	.  reduce 6 (src line 42)
+
+
+state 16
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr '*' expr.    (7)
+	expr:  expr.'/' expr 
+
+	.  reduce 7 (src line 43)
+
+
+state 17
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr '/' expr.    (8)
+
+	.  reduce 8 (src line 44)
+
+
+state 18
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	assignment:  VARIABLE '=' expr.    (10)
+
+	'+'  shift 7
+	'-'  shift 8
+	'*'  shift 9
+	'/'  shift 10
+	.  reduce 10 (src line 48)
+
+
+state 19
+	expr:  '(' expr ')'.    (9)
+
+	.  reduce 9 (src line 45)
+
+
+12 terminals, 4 nonterminals
+11 grammar rules, 20/8000 states
+0 shift/reduce, 0 reduce/reduce conflicts reported
+53 working sets used
+memory: parser 8/120000
+12 extra closures
+39 shift entries, 1 exceptions
+9 goto entries
+0 entries saved by goto default
+Optimizer space used: output 28/120000
+28 table entries, 1 zero
+maximum spread: 12, maximum offset: 12
