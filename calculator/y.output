@@ -1,0 +1,239 @@
+
+state 0
+	$accept: .start $end 
+
+	NUMBER  shift 4
+	IDENTIFIER  shift 5
+	'-'  shift 7
+	'('  shift 6
+	.  error
+
+	expr  goto 2
+	start  goto 1
+	assignment  goto 3
+
+state 1
+	$accept:  start.$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	start:  expr.    (1)
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+
+	'+'  shift 8
+	'-'  shift 9
+	'*'  shift 10
+	'/'  shift 11
+	.  reduce 1 (src line 24)
+
+
+state 3
+	start:  assignment.    (2)
+
+	.  reduce 2 (src line 28)
+
+
+state 4
+	expr:  NUMBER.    (3)
+
+	.  reduce 3 (src line 30)
+
+
+state 5
+	expr:  IDENTIFIER.    (4)
+	assignment:  IDENTIFIER.'=' expr 
+
+	'='  shift 12
+	.  reduce 4 (src line 38)
+
+
+state 6
+	expr:  '('.expr ')' 
+
+	NUMBER  shift 4
+	IDENTIFIER  shift 14
+	'-'  shift 7
+	'('  shift 6
+	.  error
+
+	expr  goto 13
+
+state 7
+	expr:  '-'.expr 
+
+	NUMBER  shift 4
+	IDENTIFIER  shift 14
+	'-'  shift 7
+	'('  shift 6
+	.  error
+
+	expr  goto 15
+
+state 8
+	expr:  expr '+'.expr 
+
+	NUMBER  shift 4
+	IDENTIFIER  shift 14
+	'-'  shift 7
+	'('  shift 6
+	.  error
+
+	expr  goto 16
+
+state 9
+	expr:  expr '-'.expr 
+
+	NUMBER  shift 4
+	IDENTIFIER  shift 14
+	'-'  shift 7
+	'('  shift 6
+	.  error
+
+	expr  goto 17
+
+state 10
+	expr:  expr '*'.expr 
+
+	NUMBER  shift 4
+	IDENTIFIER  shift 14
+	'-'  shift 7
+	'('  shift 6
+	.  error
+
+	expr  goto 18
+
+state 11
+	expr:  expr '/'.expr 
+
+	NUMBER  shift 4
+	IDENTIFIER  shift 14
+	'-'  shift 7
+	'('  shift 6
+	.  error
+
+	expr  goto 19
+
+state 12
+	assignment:  IDENTIFIER '='.expr 
+
+	NUMBER  shift 4
+	IDENTIFIER  shift 14
+	'-'  shift 7
+	'('  shift 6
+	.  error
+
+	expr  goto 20
+
+state 13
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  '(' expr.')' 
+
+	'+'  shift 8
+	'-'  shift 9
+	'*'  shift 10
+	'/'  shift 11
+	')'  shift 21
+	.  error
+
+
+state 14
+	expr:  IDENTIFIER.    (4)
+
+	.  reduce 4 (src line 38)
+
+
+state 15
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  '-' expr.    (10)
+
+	.  reduce 10 (src line 50)
+
+
+state 16
+	expr:  expr.'+' expr 
+	expr:  expr '+' expr.    (5)
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+
+	'*'  shift 10
+	'/'  shift 11
+	.  reduce 5 (src line 45)
+
+
+state 17
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr '-' expr.    (6)
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+
+	'*'  shift 10
+	'/'  shift 11
+	.  reduce 6 (src line 46)
+
+
+state 18
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr '*' expr.    (7)
+	expr:  expr.'/' expr 
+
+	.  reduce 7 (src line 47)
+
+
+state 19
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr '/' expr.    (8)
+
+	.  reduce 8 (src line 48)
+
+
+state 20
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	assignment:  IDENTIFIER '=' expr.    (11)
+
+	'+'  shift 8
+	'-'  shift 9
+	'*'  shift 10
+	'/'  shift 11
+	.  reduce 11 (src line 53)
+
+
+state 21
+	expr:  '(' expr ')'.    (9)
+
+	.  reduce 9 (src line 49)
+
+
+12 terminals, 4 nonterminals
+12 grammar rules, 22/8000 states
+0 shift/reduce, 0 reduce/reduce conflicts reported
+53 working sets used
+memory: parser 9/120000
+12 extra closures
+50 shift entries, 1 exceptions
+10 goto entries
+0 entries saved by goto default
+Optimizer space used: output 31/120000
+31 table entries, 1 zero
+maximum spread: 12, maximum offset: 12
